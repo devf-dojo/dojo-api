@@ -28,5 +28,5 @@ libraries:
 env_variables:
   # The following values are to be replaced by information from the output of
   # 'gcloud service-management deploy swagger.json' command.
-  ENDPOINTS_SERVICE_NAME: devfstudent-173800.appspot.com
+  ENDPOINTS_SERVICE_NAME: "127.0.0.1"
   ENDPOINTS_SERVICE_VERSION: 2017-07-17r0
