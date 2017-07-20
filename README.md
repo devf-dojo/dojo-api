@@ -1,8 +1,8 @@
 Dojo-Api
 ========
 
-## Installation 
-In the root directory 
+## Installation
+In the root directory
 ```
 mkdir lib
 pip install -t lib -r requirements.txt
@@ -27,5 +27,5 @@ And the response will be
 ```
 {
     "status": "OK"
-}	
+}
 ```

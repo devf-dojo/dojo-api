@@ -2,6 +2,7 @@ from flask_testing import TestCase
 
 from main import app
 
+from api import SMOKE_URL
 
 class MasterTest(TestCase):
     """
@@ -19,3 +20,12 @@ class MasterTest(TestCase):
 
     def tearDown(self):
         pass
+
+
+# Export
+#
+#
+__all__ = [
+    'MasterTest',
+    'SMOKE_URL',
+]
