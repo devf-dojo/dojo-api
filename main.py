@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 """
-Main module for the toptrampo mvp application.
+Main module for the dojo mvp application.
 
 Here we handle the base configurations for the application.
-
-Our application has two Blueprints: api and webapp
 
 """
 # @api.route('/my-resource/<id>', endpoint='my-resource')
