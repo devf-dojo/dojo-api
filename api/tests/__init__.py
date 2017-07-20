@@ -1,8 +1,7 @@
 from flask_testing import TestCase
 
-from main import app
+from main import app, SMOKE_URL
 
-from api import SMOKE_URL
 
 class MasterTest(TestCase):
     """

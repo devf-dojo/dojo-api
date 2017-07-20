@@ -32,6 +32,10 @@ pip install -r requirements.txt -t lib
 ```
 
 0. Run this to start smoke tests, using GAE plugin for nose:
+* Note, maybe you should run the command sending the google sdk directory, sometimes it sends and error ```no module named dev_appserver.py```
+```
+nosetests --with-gae --gae-lib-root=[PATH TO SDK]/google_appengine [directory]
+```
 ```
 nosetests --with-gae [directory]
 ```
@@ -47,13 +51,7 @@ Ran 2 tests in 0.388s
 ```
 dev_appserver.py .
 ```
-
-Go to ```/_t/smoke``` and you should see something like this:
-```
-{
-  "foo": "bar"
-}
-```
+0. TODO
 
 
 

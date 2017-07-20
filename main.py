@@ -23,8 +23,11 @@ app = Flask(__name__)
 api = Api(app, version='1.0', title='Sample API', description='A sample API')
 swagger(app)
 
+# URLS:
+SMOKE_URL = '/_t/smoke'
 
-@api.route('/_t/smoke')
+
+@api.route(SMOKE_URL)
 @api.doc(params={'id': 'An ID'})
 class SmokeTest(Resource):
 
@@ -34,6 +37,3 @@ class SmokeTest(Resource):
 
         return jsonify(ctx)
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
