@@ -19,9 +19,12 @@ from flask import Flask, jsonify, request
 from flask_restplus import Api, Resource
 from flask_swagger import swagger
 
-app = Flask(__name__)
+from api import app
+import dojo_api_v1.dojo
+import dojo_api_v1.test
+
+
 api = Api(app, version='1.0', title='Sample API', description='A sample API')
-swagger(app)
 
 # URLS:
 SMOKE_URL = '/_t/smoke'
@@ -37,3 +40,8 @@ class SmokeTest(Resource):
 
         return jsonify(ctx)
 
+
+@app.errorhandler(500)
+def server_error(e):
+    # Log the error and stacktrace.
+    return 'An internal error occurred.', 500
