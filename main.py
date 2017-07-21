@@ -1,21 +1,47 @@
-import endpoints
-from protorpc import message_types, messages, remote
+#!/usr/bin/env python
+"""
+Main module for the dojo mvp application.
 
-class StatusResponse(messages.Message):
-	status = messages.StringField(1)
+Here we handle the base configurations for the application.
 
-@endpoints.api(name="dojo", version="v1")
-class DojoApi(remote.Service):
+"""
+# @api.route('/my-resource/<id>', endpoint='my-resource')
+# @api.doc(params={'id': 'An ID'})
+# class MyResource(Resource):
+#     def get(self, id):
+#         return {}
+#
+#     @api.doc(responses={403: 'Not Authorized'})
+#     def post(self, id):
+#         api.abort(403)
 
-	@endpoints.method(
-		message_types.VoidMessage,
+from flask import Flask, jsonify, request
+from flask_restplus import Api, Resource
+from flask_swagger import swagger
 
-		StatusResponse,
+from api import app
+import dojo_api_v1.dojo
+import dojo_api_v1.test
 
-		path='status',
-		http_method='GET',
-		name='status')
-	def status(self, request):
-		return StatusResponse(status='OK')
 
-api = endpoints.api_server([DojoApi])
+api = Api(app, version='1.0', title='Sample API', description='A sample API')
+
+# URLS:
+SMOKE_URL = '/_t/smoke'
+
+
+@api.route(SMOKE_URL)
+@api.doc(params={'id': 'An ID'})
+class SmokeTest(Resource):
+
+    def get(self):
+        _id = request.args.get('id')
+        ctx = {'id': _id}
+
+        return jsonify(ctx)
+
+
+@app.errorhandler(500)
+def server_error(e):
+    # Log the error and stacktrace.
+    return 'An internal error occurred.', 500
