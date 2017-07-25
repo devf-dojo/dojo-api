@@ -1,4 +1,4 @@
-import falcon 
+import falcon
 import json
 
 class Server(object):
@@ -7,4 +7,3 @@ class Server(object):
 		resp.content_type = "application/json"
 		resp.body = json.dumps({"status":"ok"})
 
-		
