@@ -19,3 +19,9 @@ You will get the next response
 ```
 {"status": "ok"}
 ```
+
+## Testing
+Run the next command
+```
+python -m unittest -v test
+```
