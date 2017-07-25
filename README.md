@@ -4,28 +4,18 @@ Dojo-Api
 ## Installation
 In the root directory
 ```
-mkdir lib
-pip install -t lib -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Run app
 
-Open **app.yaml** and config the **ENDPOINTS_SERVICE_NAME** to set your hostname.
+Run the next command
+```
+gunicorn app:app
+```
+Go to http://127.0.0.1:8000/status
 
-If you want to deploy on local use the next command:
+You will get the next response
 ```
-dev_appserver.py --port=8080 .
-```
-
-## Test
-
-Go to your **localhost:8080**
-```
-/dojo/api/v1/status
-```
-And the response will be
-```json
-{
-    "status": "OK"
-}
+{"status": "ok"}
 ```
