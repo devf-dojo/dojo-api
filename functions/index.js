@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const userModel = require('./userModel');
+const db = require("./db")
 const admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().firebase);
@@ -27,15 +28,9 @@ exports.mirror = functions.https.onRequest((req, res) => {
 })
 
 exports.createuser = functions.https.onRequest((req, res) => {
-	const data = req.body;
-	console.log(data)
+	const user = req.body.uid;
 
-	if(userModel.validateNewUser(data)){
-		admin.database().ref('/users').push(data)
-		res.json({"status":"User Created"})
-	}else {
-		res.json({"status":"Bad Request"})
-	}
+	console.log(db.getUser(user));
 
 })
 
