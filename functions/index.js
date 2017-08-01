@@ -52,6 +52,15 @@ exports.createuser = functions.https.onRequest((req, res) => {
 
 exports.usercv = functions.https.onRequest((req, res) => {
   const data = req.body;
-
-
+  const is_valid = userModel.validateCvUser(data)
+  if(!is_valid) {
+    res.json(400, {
+      error: {
+        code: "CvUser/invalid",
+        message: "The CvUser malformated or invalid"
+      }
+    })
+    return;
+  }
+  res.json(data)
 })

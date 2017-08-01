@@ -1,17 +1,6 @@
 const Ajv = require('ajv');
 const ajv = new Ajv();
 
-const newUser = {
-	"additionalProperties": false,
-	"type": "object",
-	"properties": {
-		"uid": {"type":"string"},
-		"name": {"type":"string"},
-		"user": {"type":"string"},
-		"email": {"type":"string", "format":"email"}
-	}
-};
-
 const cvUser = {
 	"additionalProperties" : false,
 	"type" : "object",
@@ -64,12 +53,7 @@ const cvUser = {
 
 	}
 }
-var vnewUser = ajv.compile(newUser);
 var vcvUser = ajv.compile(cvUser)
-
-module.exports.validateNewUser =  function(data){
-	return vnewUser(data)
-}
 
 module.exports.validateCvUser =  function(data){
 	return vcvUser(data)
