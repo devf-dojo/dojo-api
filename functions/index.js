@@ -32,7 +32,16 @@ exports.getUser = functions.https.onRequest((req, res) => {
     if(user_info["error"] !== undefined) {
       res.json(403, user_info)
     } else {
-      res.json(user_info)
+    	var uid = user_info.uid;
+    	
+    	admin.auth().createCustomToken(uid)
+    	.then(function(customToken){
+    		res.json({uid:uid, jwt: customToken})
+    	})
+    	.catch(function(error) {
+		    console.log("Error creating custom token:", error);
+		  });
+      	
     }
   });
 })
