@@ -19,7 +19,7 @@ try {
 exports.addMessage = functions.https.onRequest((req, res) => {
   const original = req.query.text;
 
-  admin.database().ref('/messages').push({original: original}).then(snapshot => {
+  admin.database().ref('/messages').push({ original: original }).then(snapshot => {
     res.redirect(303, snapshot.ref);
   })
 })
@@ -38,10 +38,19 @@ exports.mirror = functions.https.onRequest((req, res) => {
   res.json(req.body)
 })
 
-exports.createuser = functions.https.onRequest((req, res) => {
+exports.getUser = functions.https.onRequest((req, res) => {
+  if(req.method != "POST") {
+    res.json(405, {
+      error: {
+        code: "method not allowed",
+        message: `the method ${req.method} is not allowed, please try again with a post`
+      }
+    })
+    return;
+  }
   const user = req.body.uid;
 
-  db.getUser(user, (user_info) =>{
+  db.getUser(user, (user_info) => {
     if(user_info["error"] !== undefined) {
       res.json(403, user_info)
     } else {
