@@ -3,7 +3,7 @@ Dojo API
 
 ## Get data user
 To get data from a previous sign up user, go to:
-https://us-central1-devf-dojo-admin.cloudfunctions.net/createuser
+https://us-central1-devf-dojo-admin.cloudfunctions.net/getUser
 
 And send a JSON post request
 ```json
@@ -14,24 +14,7 @@ And send a JSON post request
 If the user exists the API REST response is
 ```json
 {
-	"uid": "",
-	"email": "",
-	"emailVerified": ,
-	"displayName": "",
-	"photoURL": "",
-	"disabled": ,
-	"metadata": {
-		"lastSignInTime": "",
-		"creationTime": ""
-	},
-	"providerData": [
-		{
-			"uid": "",
-			"displayName": "",
-			"email": "",
-			"photoURL": "",
-			"providerId": "github.com"
-		}
-	]
+    "uid": "THE_USER_ID",
+    "jwt": "JSON_WEB_TOKEN"
 }
 ```
