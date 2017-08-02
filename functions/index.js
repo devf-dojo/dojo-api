@@ -3,18 +3,14 @@ const userModel = require('./userModel');
 const db = require("./db")
 const admin = require('firebase-admin');
 
-try {
-  const serviceAccount = require("../certs/serviceAccountKey.json");
 
-  admin.initializeApp(
-    {
-      credential: admin.credential.cert(serviceAccount),
-      databaseURL: "https://devf-dojo-admin.firebaseio.com"
-    }
-  );
-} catch(e) {
-  admin.initializeApp(functions.config().firebase);
-}
+const serviceAccount = require("./serviceAccountKey.json");
+
+admin.initializeApp(
+{
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://devf-dojo-admin.firebaseio.com"
+});
 
 exports.getUser = functions.https.onRequest((req, res) => {
   if(req.method != "POST") {
