@@ -5,9 +5,9 @@ const cvUser = {
 	"additionalProperties" : false,
 	"type" : "object",
 	"properties" : {
-		/*"name": {"type":"string"},
-		"email": {"type":"string", "format":"email"},*/
-		"photo" : {"type":"string", "format": "url"},
+		"name": {"type":"string"},
+		"email": {"type":"string", "format":"email"},
+		"photo" : {"type":"string"},
 		"cintas" : {
 			"type": "array",
 			"items":[
@@ -35,15 +35,15 @@ const cvUser = {
 			"type": "array",
 			"items": [{"type":"string"}]
 		},
-		"website": {"type": "string", "format": "url"},
+		"website": {"type": "string"},
 		"social": {
 			"type": "object",
 			"additionalProperties": false,
 			"properties": {
-				"facebook": {"type":"string", "format": "url"},
-				"twitter": {"type":"string", "format": "url"},
-				"linkedin": {"type":"string", "format": "url"},
-				"github": {"type":"string", "format": "url"}
+				"facebook": {"type":"string"},
+				"twitter": {"type":"string"},
+				"linkedin": {"type":"string"},
+				"github": {"type":"string"}
 			}
 
 		},

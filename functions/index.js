@@ -57,19 +57,21 @@ app.use('/v1/dojo/auth/login', (req, res, next) => {
 app.use('/v1/dojo/users/:uid/cv', (req, res, next) => {
   var uid = req.params.uid
 
-
-  
-
   if(req.method == 'POST'){
   	var cvdata = req.body;
   	if(userModel.validateCvUser(cvdata)){
   	//save data
 	  	db.saveCv(uid, cvdata, database);
-	  	res.json({"status":"ok"});
+	  	res.json(201,{"status":"created"});
 		return;
 	}
 	res.json({"status":"error"});
 	return;
+  }
+  if(req.method == 'GET'){
+  	db.getCv(uid, database,(value) => {
+  		res.json(value.val());
+  	});
   }
  
 })
