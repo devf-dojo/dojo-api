@@ -1,8 +1,5 @@
 const admin = require('firebase-admin');
 
-
-
-
 module.exports.getUser = function(uid, func) {
 	admin.auth().getUser(uid).then(function(userRecord) {
 		func(userRecord)
@@ -25,9 +22,29 @@ module.exports.saveCv = function(uid, cvdata, database){
 }
 
 module.exports.getCv = (uid, database, callback) => {
-	var ref =  database.ref(`/users/${uid}/cv`);
-
+	const ref =  database.ref(`/users/${uid}/cv`);
 	ref.on("value", callback, (error) => {
-		console.log(error);
+		const dummydata = {		
+		"name":"",
+		"email":"",
+		"photo" : "",
+		"cintas" : [
+			{"cinta":"", "batch":0}
+		],
+
+		"skills": [],
+		"bio": "",
+		"telefono": "",
+		"interests": [],
+		"hoobies": [],
+		"website": "",
+		"social": {
+				"github":""
+			},
+		"lenguages": []
+		}
+
+		ref.set(dummydata);
+
 	});
 }

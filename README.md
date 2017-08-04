@@ -13,7 +13,7 @@ Header: Bearer <JWT>
 	"email":"",
 	"photo" : "",
 	"cintas" : [
-		{"cinta":"", "batch":N}
+		{"cinta":"", "batch":14}
 	],
 	"skills": ["", ""],
 	"bio": "",
