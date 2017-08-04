@@ -1,20 +1,37 @@
 Dojo API
 ===============
+API: https://us-central1-devf-dojo-admin.cloudfunctions.net/
 
-## Login user
-To get data from a previous sign up user, go to:
-https://us-central1-devf-dojo-admin.cloudfunctions.net/api/v1/dojo/auth/login
+## Create CV
 
-And send a JSON post request
+POST: api/v1/dojo/users/{uid}/cv
+Header: Bearer <JWT>
+
 ```json
-{
-  	"uid": "YOUR_USER_UID"
+{		
+	"name":"",
+	"email":"",
+	"photo" : "",
+	"cintas" : [
+		{"cinta":"", "batch":N}
+	],
+	"skills": ["", ""],
+	"bio": "",
+	"telefono": "",
+	"interests": ["", ""],
+	"hoobies": ["", ""],
+	"website": "",
+	"social": {
+			"facebook":"",
+			"twitter":"",
+			"linkedin":"",
+			"github":"",
+		},
+	"lenguages": ["", ""]
 }
 ```
-If the user exists the API REST response is
-```json
-{
-    "uid": "THE_USER_ID",
-    "jwt": "JSON_WEB_TOKEN"
-}
-```
+
+## Get CV
+
+GET: api/v1/dojo/users/{uid}/cv
+Header: Bearer <JWT>
