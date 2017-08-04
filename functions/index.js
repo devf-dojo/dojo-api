@@ -13,14 +13,14 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://devf-dojo-admin.firebaseio.com"
 });
-
+const database = admin.database();
 // init express
 const app = express()
 app.use(cors({ origin: true }))
 /*app.get("*", (request, response) => {
   response.send("Hello from Express on Firebase with CORS! No trailing slash required!")
 })*/
-app.use('/v1/dojo/get_user', (req, res, next) => {
+app.use('/v1/dojo/auth/login', (req, res, next) => {
  if(req.method != "POST") {
     res.json(405, {
       error: {
@@ -31,14 +31,13 @@ app.use('/v1/dojo/get_user', (req, res, next) => {
     return;
   }
   const user = req.body.uid;
-
+ 
   db.getUser(user, (user_info) => {
     if(user_info["error"] !== undefined) {
       res.json(403, user_info)
       return;
     }
     var uid = user_info.uid;
-    //res.json(user_info)
 
     admin.auth().createCustomToken(uid).then((customToken) => {
       res.json({uid: uid, jwt: customToken})
@@ -55,19 +54,24 @@ app.use('/v1/dojo/get_user', (req, res, next) => {
   });
 })
 
-app.use('/v1/dojo/is_cv_valid', (req, res, next) => {
-  const data = req.body;
-  const is_valid = userModel.validateCvUser(data)
-  if(!is_valid) {
-    res.json(400, {
-      error: {
-        code: "CvUser/invalid",
-        message: "The CvUser malformated or invalid"
-      }
-    })
-    return;
+app.use('/v1/dojo/users/:uid/cv', (req, res, next) => {
+  var uid = req.params.uid
+
+
+  
+
+  if(req.method == 'POST'){
+  	var cvdata = req.body;
+  	if(userModel.validateCvUser(cvdata)){
+  	//save data
+	  	db.saveCv(uid, cvdata, database);
+	  	res.json({"status":"ok"});
+		return;
+	}
+	res.json({"status":"error"});
+	return;
   }
-  res.json(data)
+ 
 })
 
 exports.api = functions.https.onRequest((request, response) => {

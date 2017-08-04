@@ -5,8 +5,8 @@ const cvUser = {
 	"additionalProperties" : false,
 	"type" : "object",
 	"properties" : {
-		"name": {"type":"string"},
-		"email": {"type":"string", "format":"email"},
+		/*"name": {"type":"string"},
+		"email": {"type":"string", "format":"email"},*/
 		"photo" : {"type":"string", "format": "url"},
 		"cintas" : {
 			"type": "array",
@@ -57,5 +57,5 @@ const cvUser = {
 var vcvUser = ajv.compile(cvUser)
 
 module.exports.validateCvUser =  function(data){
-	return vcvUser(data)
+	return vcvUser(data);
 }

@@ -1,9 +1,9 @@
 Dojo API
 ===============
 
-## Get data user
+## Login user
 To get data from a previous sign up user, go to:
-https://us-central1-devf-dojo-admin.cloudfunctions.net/api/v1/dojo/get_user
+https://us-central1-devf-dojo-admin.cloudfunctions.net/api/v1/dojo/auth/login
 
 And send a JSON post request
 ```json
