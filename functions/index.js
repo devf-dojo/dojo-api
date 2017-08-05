@@ -27,18 +27,18 @@ app.use(cookieParser())
 const validateFirebaseIdToken = (req, res, next) => {
   console.log('Check if request is authorized with Firebase ID token');
 
-  if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
-      !req.cookies.__session) {
+  if((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
+    !req.cookies.__session) {
     console.error('No Firebase ID token was passed as a Bearer token in the Authorization header.',
-        'Make sure you authorize your request by providing the following HTTP header:',
-        'Authorization: Bearer <Firebase ID Token>',
-        'or by passing a "__session" cookie.');
-    res.status(403).send('Unauthorized');
+      'Make sure you authorize your request by providing the following HTTP header:',
+      'Authorization: Bearer <Firebase ID Token>',
+      'or by passing a "__session" cookie.');
+    res.json(403, { error: 'Unauthorized' });
     return;
   }
 
   let idToken;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+  if(req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
     console.log('Found "Authorization" header');
     // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split('Bearer ')[1];
@@ -48,19 +48,19 @@ const validateFirebaseIdToken = (req, res, next) => {
     idToken = req.cookies.__session;
   }
   admin.auth().verifyIdToken(idToken).then(decodedIdToken => {
-    console.log('ID Token correctly decoded', decodedIdToken);
+    //console.log('ID Token correctly decoded', decodedIdToken);
     req.user = decodedIdToken;
     next();
   }).catch(error => {
     console.error('Error while verifying Firebase ID token:', error);
-    res.status(403).send('Unauthorized');
+    res.json(500, { error });
   });
 };
 app.use(validateFirebaseIdToken)
 
 
 app.use('/v1/dojo/auth/login', (req, res, next) => {
- if(req.method != "POST") {
+  if(req.method != "POST") {
     res.json(405, {
       error: {
         code: "method not allowed",
@@ -73,13 +73,13 @@ app.use('/v1/dojo/auth/login', (req, res, next) => {
 
   db.getUser(user, (user_info) => {
     if(user_info["error"] !== undefined) {
-      res.json(403, user_info)
+      res.json(401, user_info)
       return;
     }
     var uid = user_info.uid;
 
     admin.auth().createCustomToken(uid).then((customToken) => {
-      res.json({uid: uid, jwt: customToken})
+      res.json({ uid: uid, jwt: customToken })
     }).catch((error) => {
       console.log("Error creating custom token:", error);
 
@@ -96,28 +96,53 @@ app.use('/v1/dojo/auth/login', (req, res, next) => {
 app.use('/v1/dojo/users/:uid/cv', (req, res, next) => {
   var uid = req.params.uid
 
-  if(req.method == 'POST'){
-  	var cvdata = req.body;
-  	if(userModel.validateCvUser(cvdata)){
-  	//save data
-	  	db.saveCv(uid, cvdata, database);
-	  	res.json(201,{"status":"created"});
-		return;
-	}
-	res.json({"status":"error"});
-	return;
+  if(req.method == 'POST' || req.method == 'PUT') {
+    if(req.user.user_id != uid) {
+      res.json(403, { "status": "Unauthorized" });
+      return;
+    }
+    var cvdata = req.body;
+    if(cvdata == null || (cvdata.constructor === Object && Object.keys(cvdata).length === 0)) {
+      res.json(400, { "status": "Bad Request" });
+      return;
+
+    }
+
+    if(userModel.validateCvUser(cvdata)) {
+      //save data
+      if(req.method == 'PUT') {
+        db.updateCv(uid, cvdata, database);
+        res.json(200, { "status": "updated" });
+      } else {
+        db.saveCv(uid, cvdata, database);
+        res.json(201, { "status": "created" });
+      }
+      return;
+    }
+    res.json(400, { "status": "invalid cv" });
+    return;
   }
 
-  if(req.method == 'GET'){
-  	db.getCv(uid, database,(value) => {
-  		res.json(value.val());
-  	});
+  if(req.method == 'GET') {
+    db.getCv(uid, database, (value) => {
+      const val = value.val();
+      if(val == null) {
+        res.json(404, {
+          error: {
+            code: "data not found",
+            message: "the cv info was not found in the database"
+          }
+        });
+        return;
+      }
+      res.json(val);
+    });
   }
- 
+
 })
 
 exports.api = functions.https.onRequest((request, response) => {
-  if (!request.path) {
+  if(!request.path) {
     request.url = `/${request.url}` // prepend '/' to keep query params if any
   }
   return app(request, response)
