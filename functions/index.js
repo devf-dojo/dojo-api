@@ -5,18 +5,45 @@ fire.init();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const express = require('express');
+const request = require('request');
 const userModel = require('./userModel');
 const db = require("./db")
 const mid = require("./middleware")
 
-//init firebase
 
+//init firebase
 
 const app = express()
 
 //Middleware config
 app.use(cors({ origin: true }))
 app.use(cookieParser())
+
+// Enpoint for login with Android
+app.get('/v1/dojo/auth/login_github', (req, res, next) => {
+  const code = req.param("code", "");
+  if(code == "") {
+    res.json(403, { error: "Bad request" })
+    return;
+  }
+  request.post({
+    url: `https://github.com/login/oauth/access_token?client_id=${functions.config().github.public}&` +
+    `client_secret=${functions.config().github.private}&` +
+    `code=${code}&accept=>json`,
+    headers: {
+      'Accept': 'application/json',
+    },
+
+  }, function(error, response, body) {
+    if(response && response.statusCode == 200) {
+      res.send(response.body);
+      return;
+    }
+
+    res.json(403, { error: "code not valid or was expired" })
+  });
+});
+
 app.use(mid.validateFirebaseIdToken)
 
 //Endpoints
