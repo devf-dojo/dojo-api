@@ -17,7 +17,7 @@ const app = express()
 //Middleware config
 app.use(cors({ origin: true }))
 app.use(cookieParser())
-app.use(mid.validateFirebaseIdToken)
+//app.use(mid.validateFirebaseIdToken)
 
 //Endpoints
 const enpLogin = '/v1/dojo/auth/login'
@@ -76,7 +76,7 @@ app.get(enpUserCv, (req, res, next) => {
 		var value = value.val();
 		console.log(value);
 		if(value != null){
-			res.json(value.val());
+			res.json(value);
 		}else{
 			res.status(203).json({"status":"error"});
 		}
