@@ -52,7 +52,8 @@ const cvUser = {
 			"items": [{"type":"string"}]
 		}
 
-	}
+	},
+	"required":["name","email"]
 }
 var vcvUser = ajv.compile(cvUser)
 
