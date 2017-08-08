@@ -24,7 +24,7 @@ const enpLogin = '/v1/dojo/auth/login'
 const enpUserCv = '/v1/dojo/users/:uid/cv'
 
 app.use(enpLogin, (req, res, next) => {
- if(req.method != "POST") {
+  if(req.method != "POST") {
     res.json(405, {
       error: {
         code: "method not allowed",
@@ -37,15 +37,15 @@ app.use(enpLogin, (req, res, next) => {
 
   db.getUser(user, (user_info) => {
     if(user_info["error"] !== undefined) {
-      res.json(403, user_info)
+      res.json(401, user_info)
       return;
     }
     var uid = user_info.uid;
 
     admin.auth().createCustomToken(uid).then((customToken) => {
-      res.json({uid: uid, jwt: customToken})
+      res.json({ uid: uid, jwt: customToken })
     }).catch((error) => {
-      console.log("Error creating custom token:", error);
+      console.error("Error creating custom token:", error);
 
       res.json(500, {
         error: {
@@ -57,34 +57,60 @@ app.use(enpLogin, (req, res, next) => {
   });
 })
 
-app.post(enpUserCv, (req, res, next) => {
-	const uid = req.params.uid;
-	const cvdata = req.body;
+app.put(enpUserCv, (req, res, next) => {
+  const uid = req.params.uid;
+  const cvdata = req.body;
 
-	if(userModel.validateCvUser(cvdata)){
-		db.saveCv(uid,cvdata);
-		res.json({"status": "created"});
-		return;
-	}
-	res.status(203).json({"status":"error"});
-	return;
+  if(req.user.user_id != uid) {
+    res.json(403, { "status": "Unauthorized" });
+    return;
+  }
+
+  if(cvdata == null || (cvdata.constructor === Object && Object.keys(cvdata).length === 0)) {
+    res.json(400, { "status": "Bad Request" });
+    return;
+  }
+
+  if(userModel.validateCvUser(cvdata)) {
+    db.updateCv(uid, cvdata);
+    res.json(200, { "status": "updated" });
+    return;
+  }
+  res.status(403).json({ "status": "invalid cv\nthe changes not have effects" });
+})
+
+app.post(enpUserCv, (req, res, next) => {
+  const uid = req.params.uid;
+  const cvdata = req.body;
+
+  if(userModel.validateCvUser(cvdata)) {
+    db.saveCv(uid, cvdata);
+    res.json(201, { "status": "created" });
+    return;
+  }
+  res.status(403).json({ "status": "invalid cv" });
 });
 
 app.get(enpUserCv, (req, res, next) => {
-	const uid = req.params.uid
-	db.getCv(uid, (value) => {
-		var value = value.val();
-		console.log(value);
-		if(value != null){
-			res.json(value.val());
-		}else{
-			res.status(203).json({"status":"error"});
-		}
-	})
+  const uid = req.params.uid
+  db.getCv(uid, (value) => {
+    let val = value.val();
+    //console.log(val);
+    if(val != null) {
+      res.json(val);
+    } else {
+      res.json(404, {
+        error: {
+          code: "data not found",
+          message: "the cv info was not found in the database"
+        }
+      });
+    }
+  })
 })
 
 exports.api = functions.https.onRequest((request, response) => {
-  if (!request.path) {
+  if(!request.path) {
     request.url = `/${request.url}` // prepend '/' to keep query params if any
   }
   return app(request, response)
