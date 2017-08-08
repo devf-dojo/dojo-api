@@ -7,6 +7,7 @@ const cvUser = {
 	"properties" : {
 		"name": {"type":"string"},
 		"email": {"type":"string", "format":"email"},
+		"id": {"type": "integer"},
 		"photo" : {"type":"string"},
 		"cintas" : {
 			"type": "array",

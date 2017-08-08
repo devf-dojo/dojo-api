@@ -80,8 +80,6 @@ app.get(enpUserCv, (req, res, next) => {
 		}else{
 			res.status(203).json({"status":"error"});
 		}
-
-		
 	})
 })
 

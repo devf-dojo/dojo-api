@@ -48,8 +48,6 @@ module.exports.saveCv = function(uid, cvdata){
 module.exports.getCv = (uid, callback) => {
 	const ref =  database.ref(`/users/${uid}/cv`);
 	ref.on("value", callback, (error) => {
-		
 		ref.set(defaultModel);
-
 	});
 }
