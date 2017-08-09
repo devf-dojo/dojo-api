@@ -36,7 +36,12 @@ app.get('/v1/dojo/auth/login_github', (req, res, next) => {
 
   }, function(error, response, body) {
     if(response && response.statusCode == 200) {
-      res.send(response.body);
+      const json = JSON.parse(response.body);
+      if(json.token != null) {
+        res.json(json);
+      } else {
+        res.json(403, json);
+      }
       return;
     }
 
