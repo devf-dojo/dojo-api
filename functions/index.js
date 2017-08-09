@@ -28,8 +28,8 @@ app.get('/v1/dojo/auth/login_github', (req, res, next) => {
   }
   request.post({
     url: `https://github.com/login/oauth/access_token?client_id=${functions.config().github.public}&` +
-    `client_secret=${functions.config().github.private}&` +
-    `code=${code}&accept=>json`,
+    `client_secret=${functions.config().github.secret}&` +
+    `code=${code}&accept=json`,
     headers: {
       'Accept': 'application/json',
     },

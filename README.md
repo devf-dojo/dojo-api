@@ -5,7 +5,7 @@ API: https://us-central1-devf-dojo-admin.cloudfunctions.net/
 ## To config the env run:
 ```
 firebase functions:config:set github.public "YOUR GITHUB CLIENT ID"
-firebase functions:config:set github.private "YOUR GITHUB PRIVATE KEY"
+firebase functions:config:set github.secret "YOUR GITHUB PRIVATE KEY"
 ```
 
 ## To Get the env localy run:
