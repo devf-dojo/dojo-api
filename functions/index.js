@@ -37,7 +37,7 @@ app.get('/v1/dojo/auth/login_github', (req, res, next) => {
   }, function(error, response, body) {
     if(response && response.statusCode == 200) {
       const json = JSON.parse(response.body);
-      if(json.token != null) {
+      if(json.access_token != null) {
         res.json(json);
       } else {
         res.json(403, json);
