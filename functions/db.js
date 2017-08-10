@@ -9,19 +9,16 @@ const defaultModel = {
 	"email": "",
 	"photo": "",
 	"cintas": [
-		{ "cinta": "", "batch": 0 }
 	],
 
 	"skills": [],
-	"bio": "",
-	"telefono": "",
+	"biography": "",
+	"phone": "",
 	"interests": [],
-	"hoobies": [],
+	"hobbies": [],
 	"website": "",
-	"social": {
-		"github": ""
-	},
-	"lenguages": []
+	"github": "",
+	"languages": []
 };
 
 
@@ -35,26 +32,16 @@ module.exports.getUser = function(uid, func) {
 
 module.exports.saveCv = function(uid, cvdata) {
 
-	admin.auth().getUser(uid).then((userRecord) => {
-		const cv = database.ref(`/users/${uid}/cv`);
-		cvdata.id = userRecord.providerData[0].uid
-		cv.set(cvdata);
+	const cv = database.ref(`/users/${uid}/cv`);
+	cv.set(cvdata);
 
-	}).catch(function(error) {
-		console.log({ "error": error })
-	})
 }
 
 module.exports.updateCv = function(uid, cvdata) {
 
-	admin.auth().getUser(uid).then((userRecord) => {
-		const cv = database.ref(`/users/${uid}/cv`);
-		cvdata.id = userRecord.providerData[0].uid
-		cv.update(cvdata);
+	const cv = database.ref(`/users/${uid}/cv`);
+	cv.update(cvdata);
 
-	}).catch(function(error) {
-		console.log({ "error": error })
-	})
 }
 
 module.exports.getCv = (uid, callback) => {

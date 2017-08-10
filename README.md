@@ -27,16 +27,18 @@ Header: Bearer <JWT>
 		{"belt":"", "batch":14}
 	],
 	"skills": ["", ""],
-	"bio": "",
+	"biography": "",
 	"phone": "",
 	"interests": ["", ""],
 	"hobbies": ["", ""],
 	"website": "",
+
 	"facebook":"",
 	"twitter":"",
 	"linkedin":"",
 	"github":"",
-	"lenguages": ["", ""]
+
+	"languages": ["", ""]
 }
 ```
 

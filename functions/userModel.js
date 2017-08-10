@@ -42,13 +42,13 @@ const cvUser = {
 		"linkedin": {"type":"string"},
 		"github": {"type":"string"},
 
-		"lenguages": {
+		"languages": {
 			"type": "array",
 			"items": [{"type":"string"}]
 		}
 
 	},
-	"required":["name","email"]
+	//"required":["name","email"]
 }
 var vcvUser = ajv.compile(cvUser)
 
