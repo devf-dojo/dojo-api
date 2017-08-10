@@ -23,22 +23,22 @@ Header: Bearer <JWT>
 	"name":"",
 	"email":"",
 	"photo" : "",
-	"cintas" : [
-		{"cinta":"", "batch":14}
+	"belts" : [
+		{"belt":"", "batch":14}
 	],
 	"skills": ["", ""],
-	"bio": "",
-	"telefono": "",
+	"biography": "",
+	"phone": "",
 	"interests": ["", ""],
-	"hoobies": ["", ""],
+	"hobbies": ["", ""],
 	"website": "",
-	"social": {
-			"facebook":"",
-			"twitter":"",
-			"linkedin":"",
-			"github":"",
-		},
-	"lenguages": ["", ""]
+
+	"facebook":"",
+	"twitter":"",
+	"linkedin":"",
+	"github":"",
+
+	"languages": ["", ""]
 }
 ```
 

@@ -20,7 +20,7 @@ app.use(cors({ origin: true }))
 app.use(cookieParser())
 
 // Enpoint for login with Android
-app.get('/v1/dojo/auth/login_github', (req, res, next) => {
+app.get('/v1/dojo/auth/github/login', (req, res, next) => {
   const code = req.param("code", "");
   if(code == "") {
     res.json(403, { error: "Bad request" })
@@ -105,7 +105,17 @@ app.put(enpUserCv, (req, res, next) => {
 
   if(userModel.validateCvUser(cvdata)) {
     db.updateCv(uid, cvdata);
-    res.json(200, { "status": "updated" });
+    db.getCv(uid, (value) => {
+      let val = value.val();
+      //console.log(val);
+      if(val != null) {
+        res.json(201, val);
+      } else {
+        res.json(404, {
+          error:  "the cv info was not found in the database"
+        });
+      }
+    })
     return;
   }
   res.status(403).json({ "status": "invalid cv\nthe changes not have effects" });
@@ -117,7 +127,17 @@ app.post(enpUserCv, (req, res, next) => {
 
   if(userModel.validateCvUser(cvdata)) {
     db.saveCv(uid, cvdata);
-    res.json(201, { "status": "created" });
+    db.getCv(uid, (value) => {
+      let val = value.val();
+      //console.log(val);
+      if(val != null) {
+        res.json(201, val);
+      } else {
+        res.json(404, {
+          error:  "the cv info was not found in the database"
+        });
+      }
+    });
     return;
   }
   res.status(403).json({ "status": "invalid cv" });
