@@ -20,7 +20,7 @@ app.use(cors({ origin: true }))
 app.use(cookieParser())
 
 // Enpoint for login with Android
-app.get('/v1/dojo/auth/login_github', (req, res, next) => {
+app.get('/v1/dojo/auth/github/login', (req, res, next) => {
   const code = req.param("code", "");
   if(code == "") {
     res.json(403, { error: "Bad request" })
