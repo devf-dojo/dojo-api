@@ -4,13 +4,10 @@ node_js:
 
 branches:
   only:
-    - master
+    - development
 
 before_script:
   - cd functions
   - npm install -g firebase-tools
   - npm install
   - echo $JSON >> serviceAccountKey.json
-
-script: 
- - firebase deploy --token $FIREBASE_TOKEN
