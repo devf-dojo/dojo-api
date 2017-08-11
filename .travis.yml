@@ -17,5 +17,5 @@ jobs:
       script: echo "Deploying to firebase ..."
       deploy:
         - provider: script
-          script: deploy.sh JSON=$JSON token=$FIREBASE_TOKEN
+          script: ./deploy.sh JSON=$JSON token=$FIREBASE_TOKEN
           on: master
