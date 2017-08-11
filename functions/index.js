@@ -18,6 +18,7 @@ const app = express()
 //Middleware config
 app.use(cors({ origin: true }))
 app.use(cookieParser())
+app.use(mid.validateFirebaseIdToken)
 
 
 // Enpoint for login with Android
@@ -50,7 +51,7 @@ app.get('/v1/dojo/auth/github/login', (req, res, next) => {
   });
 });
 
-app.use(mid.validateFirebaseIdToken)
+
 
 
 //Endpoints
@@ -146,7 +147,6 @@ app.post(enpUserCv, (req, res, next) => {
 });
 
 app.get(enpUserCv, (req, res, next) => {
-<<<<<<< HEAD
 	const uid = req.params.uid
 	db.getCv(uid, (value) => {
 		var value = value.val();
@@ -157,23 +157,7 @@ app.get(enpUserCv, (req, res, next) => {
 			res.status(203).json({"status":"error"});
 		}
 	})
-=======
-  const uid = req.params.uid
-  db.getCv(uid, (value) => {
-    let val = value.val();
-    //console.log(val);
-    if(val != null) {
-      res.json(val);
-    } else {
-      res.json(404, {
-        error: {
-          code: "data not found",
-          message: "the cv info was not found in the database"
-        }
-      });
-    }
-  })
->>>>>>> 15b7efef7cc0418792068b913f7c09a59c564151
+
 })
 
 exports.api = functions.https.onRequest((request, response) => {

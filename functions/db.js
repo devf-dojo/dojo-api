@@ -31,14 +31,11 @@ module.exports.getUser = function(uid, func) {
 }
 
 module.exports.saveCv = function(uid, cvdata) {
-
 	const cv = database.ref(`/users/${uid}/cv`);
 	cv.set(cvdata);
-
 }
 
 module.exports.updateCv = function(uid, cvdata) {
-
 	const cv = database.ref(`/users/${uid}/cv`);
 	cv.update(cvdata);
 
@@ -47,7 +44,6 @@ module.exports.updateCv = function(uid, cvdata) {
 module.exports.getCv = (uid, callback) => {
 	const ref = database.ref(`/users/${uid}/cv`);
 	ref.on("value", callback, (error) => {
-
 		//ref.set(defaultModel);
 		callback({ val: () => { return dummydata } })
 
