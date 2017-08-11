@@ -1,16 +1,21 @@
+cache:
+  bundler: true
+  directories:
+    - functions/node_modules # NPM packages
+
 language: node_js
 node_js:
   - "6.11.1"
 
-branches:
-  only:
-    - master
 
-before_script:
-  - cd functions
-  - npm install -g firebase-tools
-  - npm install
-  - echo $JSON >> serviceAccountKey.json
+script: echo "Running tests against $(node -v) ..."
 
-script: 
- - firebase deploy --token $FIREBASE_TOKEN
+jobs:
+  include:
+    - stage: deploy release
+      node_js: "6.11.1"
+      script: echo "Deploying to firebase ..."
+      deploy:
+        - provider: script
+          script: deploy.sh JSON=$JSON token=$FIREBASE_TOKEN
+          on: master
