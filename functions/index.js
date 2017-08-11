@@ -11,11 +11,11 @@ const db = require("./db")
 const mid = require("./middleware")
 
 
-//init firebase
+// init firebase
 
 const app = express()
 
-//Middleware config
+// Middleware config
 app.use(cors({ origin: true }))
 app.use(cookieParser())
 
@@ -46,39 +46,8 @@ app.get('/v1/dojo/auth/github/login', (req, res, next) => {
 
 app.use(mid.validateFirebaseIdToken)
 
-//Endpoints
-const enpLogin = '/v1/dojo/auth/login'
+// Endpoints
 const enpUserCv = '/v1/dojo/users/:uid/cv'
-
-app.use(enpLogin, (req, res, next) => {
-  if(req.method != "POST") {
-    res.status(405).json({
-      error: "method not allowed",
-      "error-description": `the method ${req.method} is not allowed, please try again with a post`
-    })
-    return;
-  }
-  const user = req.body.uid;
-
-  db.getUser(user, (user_info) => {
-    if(user_info["error"] !== undefined) {
-      res.status(401).json(user_info)
-      return;
-    }
-    var uid = user_info.uid;
-
-    admin.auth().createCustomToken(uid).then((customToken) => {
-      res.json({ uid: uid, jwt: customToken })
-    }).catch((error) => {
-      console.error("Error creating custom token:", error);
-
-      res.status(500).json({
-        error: "Error creating custom token",
-        "error-description": error
-      })
-    })
-  });
-})
 
 app.put(enpUserCv, (req, res, next) => {
   const uid = req.params.uid;
