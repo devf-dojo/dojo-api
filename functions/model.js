@@ -8,22 +8,22 @@ var userModel = require('./userModel');
 }
 */
 const data = {
-			
+
 	photo : "http://google.com",
 	cintas : [
 		{cinta: "Roja", batch: 14},
 		{cinta: "Negra Backend", batch: 15}
 	],
-	bio: "Mi nombre es emmanuel",
+	biography: "Mi nombre es emmanuel",
 	skills: ["a","b"],
-	telefono: "5560793169",
+	phone: "5560793169",
 	interests: ["a","b"],
-	hoobies: ["a","b"],
+	hobbies: ["a","b"],
 	website: "http://google.com",
 	social: {"twitter":"http://google.com"},
-	lenguages: ["ingles","ruso"]
-	
-	
+	languages: ["ingles","ruso"]
+
+
 }
 var r = userModel.validateCvUser(data);
 

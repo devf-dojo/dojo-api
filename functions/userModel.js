@@ -9,14 +9,14 @@ const cvUser = {
 		"email": {"type":"string", "format":"email"},
 		"id": {"type": "integer"},
 		"photo" : {"type":"string"},
-		"cintas" : {
+		"belts" : {
 			"type": "array",
 			"items":[
 				{
 					"type": "object",
 					"additionalProperties" : false,
 						"properties" : {
-						"cinta" : {"type": "string"},
+						"belt" : {"type": "string"},
 						"batch" : {"type": "integer"}
 					}
 				}
@@ -26,35 +26,29 @@ const cvUser = {
 			"type": "array",
 			"items": [{"type":"string"}]
 		},
-		"bio": {"type": "string"},
-		"telefono": {"type":"string"},
+		"biography": {"type": "string"},
+		"phone": {"type":"string"},
 		"interests": {
 			"type": "array",
 			"items": [{"type":"string"}]
 		},
-		"hoobies": {
+		"hobbies": {
 			"type": "array",
 			"items": [{"type":"string"}]
 		},
 		"website": {"type": "string"},
-		"social": {
-			"type": "object",
-			"additionalProperties": false,
-			"properties": {
-				"facebook": {"type":"string"},
-				"twitter": {"type":"string"},
-				"linkedin": {"type":"string"},
-				"github": {"type":"string"}
-			}
+		"facebook": {"type":"string"},
+		"twitter": {"type":"string"},
+		"linkedin": {"type":"string"},
+		"github": {"type":"string"},
 
-		},
-		"lenguages": {
+		"languages": {
 			"type": "array",
 			"items": [{"type":"string"}]
 		}
 
 	},
-	"required":["name","email"]
+	//"required":["name","email"]
 }
 var vcvUser = ajv.compile(cvUser)
 
