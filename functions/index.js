@@ -77,13 +77,10 @@ app.put(enpUserCv, (req, res, next) => {
       if(val != null) {
         res.status(201).json(val);
       } else {
-<<<<<<< HEAD
-        res.json(404, {
-          error:  "The cv info was not found in the database"
-=======
+
         res.status(404).json({
           error:  "the cv info was not found in the database"
->>>>>>> ce458457b2634d84568fda562bfee2b18265d1fc
+
         });
       }
     })
