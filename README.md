@@ -13,6 +13,13 @@ firebase functions:config:set github.secret "YOUR GITHUB PRIVATE KEY"
 firebase functions:config:get > .runtimeconfig.json
 ```
 
+## Login with Github
+GET: v1/dojo/auth/github/login?code=<your code>
+
+#### HTTP Codes
+- 403 Code not valid or was expired
+
+
 ## Create CV
 
 POST: api/v1/dojo/users/{uid}/cv
@@ -41,8 +48,27 @@ Header: Bearer <JWT>
 	"languages": ["", ""]
 }
 ```
+#### HTTP Codes
+- 201 Created
+
+- 404 The cv info was not found in the database
 
 ## Get CV
 
 GET: api/v1/dojo/users/{uid}/cv
 Header: Bearer <JWT>
+
+
+## Update CV
+PUT: api/v1/dojo/users/{uid}/cv
+Header: Bearer <JWT>
+
+#### HTTP Codes
+- 400 Bad Request
+
+- 403 Unauthorized | Invalid cv the changes not have effects
+- 404 The cv info was not found in the database
+- 201 Updated
+
+
+

@@ -7,7 +7,6 @@ const cvUser = {
 	"properties" : {
 		"name": {"type":"string"},
 		"email": {"type":"string", "format":"email"},
-		"id": {"type": "integer"},
 		"photo" : {"type":"string"},
 		"belts" : {
 			"type": "array",
@@ -47,8 +46,7 @@ const cvUser = {
 			"items": [{"type":"string"}]
 		}
 
-	},
-	//"required":["name","email"]
+	}
 }
 var vcvUser = ajv.compile(cvUser)
 

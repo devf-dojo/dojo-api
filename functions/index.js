@@ -52,8 +52,6 @@ app.get('/v1/dojo/auth/github/login', (req, res, next) => {
 });
 
 
-
-
 //Endpoints
 const enpLogin = '/v1/dojo/auth/login'
 const enpUserCv = '/v1/dojo/users/:uid/cv'
@@ -115,7 +113,7 @@ app.put(enpUserCv, (req, res, next) => {
         res.json(201, val);
       } else {
         res.json(404, {
-          error:  "the cv info was not found in the database"
+          error:  "The cv info was not found in the database"
         });
       }
     })
