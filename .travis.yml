@@ -17,5 +17,12 @@ jobs:
       script: echo "Deploying to firebase ..."
       deploy:
         - provider: script
-          script: chmod 777 deploy.sh ./deploy.sh JSON=$JSON token=$FIREBASE_TOKEN
+          script: cd functions
+                  npm install -g firebase-tools
+                  npm install
+                  npm update
+
+                  echo $JSON >> serviceAccountKey.json
+
+                  firebase deploy --token $FIREBASE_TOKEN
           on: master
