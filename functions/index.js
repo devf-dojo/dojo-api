@@ -18,8 +18,6 @@ const app = express()
 // Middleware config
 app.use(cors({ origin: true }))
 app.use(cookieParser())
-app.use(mid.validateFirebaseIdToken)
-
 
 // Enpoint for login with Android
 app.get('/v1/dojo/auth/github/login', (req, res, next) => {
@@ -42,7 +40,7 @@ app.get('/v1/dojo/auth/github/login', (req, res, next) => {
       if(json.access_token != null) {
         res.json(json);
       } else {
-        res.json(403, json);
+        res.status(403).json(json);
       }
       return;
     }
@@ -51,6 +49,7 @@ app.get('/v1/dojo/auth/github/login', (req, res, next) => {
   });
 });
 
+app.use(mid.validateFirebaseIdToken)
 
 // Endpoints
 const enpUserCv = '/v1/dojo/users/:uid/cv'
@@ -79,7 +78,7 @@ app.put(enpUserCv, (req, res, next) => {
       } else {
 
         res.status(404).json({
-          error:  "the cv info was not found in the database"
+          error: "the cv info was not found in the database"
 
         });
       }
@@ -131,7 +130,7 @@ app.get(enpUserCv, (req, res, next) => {
 
 exports.api = functions.https.onRequest((request, response) => {
   if(!request.path) {
-    request.url = `/${request.url}` // prepend '/' to keep query params if any
+    request.url = '/' + request.url; // prepend '/' to keep query params if any
   }
   return app(request, response)
 })

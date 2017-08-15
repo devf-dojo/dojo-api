@@ -5,8 +5,8 @@ functions.config()
 exports.validateFirebaseIdToken = (req, res, next) => {
 
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
-      !req.cookies.__session) {
-    res.status(403, {"error":"Token no valid"});
+    !req.cookies.__session) {
+    res.status(403).json({ "error": "Token no valid" });
     return;
   }
 
@@ -25,6 +25,6 @@ exports.validateFirebaseIdToken = (req, res, next) => {
     next();
   }).catch(error => {
     console.error('Error while verifying Firebase ID token:', error);
-    res.status(403, {"error":"Unauthorized"});
+    res.status(403).json({ "error": "Unauthorized" });
   });
 };
