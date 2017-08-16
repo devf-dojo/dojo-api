@@ -20,7 +20,7 @@ app.use(cors({ origin: true }))
 app.use(cookieParser())
 
 // Enpoint for login with Android
-app.get('/v1/dojo/auth/github/login', (req, res, next) => {
+app.get('/v1/dojo/auth/github/login', (req, res) => {
   const code = req.param("code", "");
   if(code == "") {
     res.status(403).json({ error: "Bad request" })
@@ -54,7 +54,7 @@ app.use(mid.validateFirebaseIdToken)
 // Endpoints
 const enpUserCv = '/v1/dojo/users/:uid/cv'
 
-app.put(enpUserCv, (req, res, next) => {
+app.put(enpUserCv, (req, res) => {
   const uid = req.params.uid;
   const cvdata = req.body;
 
@@ -88,7 +88,7 @@ app.put(enpUserCv, (req, res, next) => {
   res.status(403).json({ "status": "invalid cv\nthe changes not have effects" });
 })
 
-app.post(enpUserCv, (req, res, next) => {
+app.post(enpUserCv, (req, res) => {
   const uid = req.params.uid;
   const cvdata = req.body;
 
@@ -110,7 +110,7 @@ app.post(enpUserCv, (req, res, next) => {
   res.status(403).json({ "status": "invalid cv" });
 });
 
-app.get(enpUserCv, (req, res, next) => {
+app.get(enpUserCv, (req, res) => {
 
   const uid = req.params.uid
   db.getCv(uid, (value) => {

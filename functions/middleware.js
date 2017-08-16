@@ -3,17 +3,17 @@ const functions = require('firebase-functions');
 functions.config()
 
 exports.validateFirebaseIdToken = (req, res, next) => {
-
-  if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
+  const authorization = req.header("Authorization");
+  if ((!authorization || !authorization.startsWith('Bearer ')) &&
     !req.cookies.__session) {
-    res.status(403).json({ "error": "Token no valid" });
+    res.status(403).json({ "error": "Token invalid" });
     return;
   }
 
   let idToken;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+  if (authorization && authorization.startsWith('Bearer ')) {
     // Read the ID Token from the Authorization header.
-    idToken = req.headers.authorization.split('Bearer ')[1];
+    idToken = authorization.split('Bearer ')[1];
   } else {
     // Read the ID Token from cookie.
     idToken = req.cookies.__session;

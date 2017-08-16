@@ -20,7 +20,6 @@ jobs:
           script: cd functions
                   npm install -g firebase-tools
                   npm install
-                  npm update
 
                   echo $JSON >> serviceAccountKey.json
 
