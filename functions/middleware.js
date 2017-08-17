@@ -6,7 +6,7 @@ exports.validateFirebaseIdToken = (req, res, next) => {
   const authorization = req.header("Authorization");
   if ((!authorization || !authorization.startsWith('Bearer ')) &&
     !req.cookies.__session) {
-    res.status(403).json({ "error": "Token invalid" });
+    res.status(403).json({ "error": "you need a access Token" });
     return;
   }
 
@@ -20,11 +20,9 @@ exports.validateFirebaseIdToken = (req, res, next) => {
   }
 
   admin.auth().verifyIdToken(idToken).then(decodedIdToken => {
-    console.log('ID Token correctly decoded', decodedIdToken);
     req.user = decodedIdToken;
     next();
   }).catch(error => {
-    console.error('Error while verifying Firebase ID token:', error);
-    res.status(403).json({ "error": "Unauthorized" });
+    res.status(500).json(error);
   });
 };
