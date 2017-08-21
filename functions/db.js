@@ -46,7 +46,7 @@ module.exports.updateCv = function(uid, cvdata) {
 
 module.exports.getCv = (uid, callback) => {
 	const ref = database.ref(`/users/${uid}/cv`);
-	ref.once("value", callback, (error) => {
+	ref.once("value").then(callback).catch((error) => {
 
 		//ref.set(defaultModel);
 		callback({ val: () => { return dummydata } })
