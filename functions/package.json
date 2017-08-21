@@ -4,11 +4,15 @@
   "dependencies": {
     "ajv": "^5.2.2",
     "assert": "^1.4.1",
+    "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
-    "express": "~4.15.4",
+    "express": "^4.15.4",
     "firebase-admin": "~5.2.1",
-    "firebase-functions": "~0.6.1",
+    "firebase-functions": "~0.6.2",
+    "graphql": "^0.10.5",
+    "graphql-server-express": "^1.1.0",
+    "graphql-tools": "^1.2.1",
     "request": "^2.81.0"
   },
   "private": true

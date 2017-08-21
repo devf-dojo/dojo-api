@@ -10,6 +10,9 @@ const userModel = require('./userModel');
 const db = require("./db")
 const mid = require("./middleware")
 
+var bodyParser = require('body-parser');
+var { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
+var { makeExecutableSchema } = require('graphql-tools');
 
 // init firebase
 
@@ -18,6 +21,28 @@ const app = express()
 // Middleware config
 app.use(cors({ origin: true }))
 app.use(cookieParser())
+
+var typeDefs = [`
+type Query {
+  hello: String
+}
+
+schema {
+  query: Query
+}`];
+
+var resolvers = {
+  Query: {
+    hello(root) {
+      return 'world';
+    }
+  }
+};
+
+var schema = makeExecutableSchema({typeDefs, resolvers});
+
+app.use('/graphql', bodyParser.json(), graphqlExpress({schema}));
+app.use('/graphiql', graphiqlExpress({endpointURL: '/devf-dojo-admin/us-central1/api/graphql'}));
 
 // Enpoint for login with Android
 app.get('/v1/dojo/auth/github/login', (req, res) => {
