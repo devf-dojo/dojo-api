@@ -1,0 +1,29 @@
+type Belt {
+  belt: String
+  batch: Int
+}
+
+type Cv {
+  name: String
+  email: String
+  photo: String
+  belts: [Belt]
+  skills: [String]
+  biography: String
+  phone: String
+  interests: [String]
+  hobbies: [String]
+  website: String
+  facebook: String
+  twitter: String
+  linkedin: String
+  github: String
+
+  languages: [String]
+}
+
+
+type Query {
+  hello: String
+  getUserCv(uid: String!): Cv
+}

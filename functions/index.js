@@ -10,39 +10,71 @@ const userModel = require('./userModel');
 const db = require("./db")
 const mid = require("./middleware")
 
-var bodyParser = require('body-parser');
-var { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
-var { makeExecutableSchema } = require('graphql-tools');
-
+var graphqlHTTP = require('express-graphql');
+var { buildSchema } = require('graphql');
 // init firebase
 
 const app = express()
+
+const database = admin.database(); //database object
 
 // Middleware config
 app.use(cors({ origin: true }))
 app.use(cookieParser())
 
-var typeDefs = [`
-type Query {
-  hello: String
+
+// Construct a schema, using GraphQL schema language
+var schema = buildSchema(`
+type Belt {
+  belt: String
+  batch: Int
 }
 
-schema {
-  query: Query
-}`];
+type Cv {
+  name: String
+  email: String
+  photo: String
+  belts: [Belt]
+  skills: [String]
+  biography: String
+  phone: String
+  interests: [String]
+  hobbies: [String]
+  website: String
+  facebook: String
+  twitter: String
+  linkedin: String
+  github: String
 
-var resolvers = {
-  Query: {
-    hello(root) {
-      return 'world';
-    }
+  languages: [String]
+}
+
+
+type Query {
+  hello: String
+  getUserCv(uid: String!): Cv
+}
+`);
+
+// The root provides a resolver function for each API endpoint
+var root = {
+  hello: () => {
+    return 'Hello world!';
+  },
+  getUserCv: (args) => {
+    const ref = database.ref(`/users/${args.uid}/cv`);
+    return ref.once('value').then((value) => {
+      //console.log(value.val())
+      return value.val()
+    })
   }
 };
 
-var schema = makeExecutableSchema({typeDefs, resolvers});
-
-app.use('/graphql', bodyParser.json(), graphqlExpress({schema}));
-app.use('/graphiql', graphiqlExpress({endpointURL: '/devf-dojo-admin/us-central1/api/graphql'}));
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  rootValue: root,
+  graphiql: true,
+}));
 
 // Enpoint for login with Android
 app.get('/v1/dojo/auth/github/login', (req, res) => {
