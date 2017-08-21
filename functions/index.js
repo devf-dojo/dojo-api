@@ -23,59 +23,6 @@ app.use(cors({ origin: true }))
 app.use(cookieParser())
 
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
-type Belt {
-  belt: String
-  batch: Int
-}
-
-type Cv {
-  name: String
-  email: String
-  photo: String
-  belts: [Belt]
-  skills: [String]
-  biography: String
-  phone: String
-  interests: [String]
-  hobbies: [String]
-  website: String
-  facebook: String
-  twitter: String
-  linkedin: String
-  github: String
-
-  languages: [String]
-}
-
-
-type Query {
-  hello: String
-  getUserCv(uid: String!): Cv
-}
-`);
-
-// The root provides a resolver function for each API endpoint
-var root = {
-  hello: () => {
-    return 'Hello world!';
-  },
-  getUserCv: (args) => {
-    const ref = database.ref(`/users/${args.uid}/cv`);
-    return ref.once('value').then((value) => {
-      //console.log(value.val())
-      return value.val()
-    })
-  }
-};
-
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  rootValue: root,
-  graphiql: true,
-}));
-
 // Enpoint for login with Android
 app.get('/v1/dojo/auth/github/login', (req, res) => {
   const code = req.param("code", "");
@@ -105,6 +52,109 @@ app.get('/v1/dojo/auth/github/login', (req, res) => {
     res.status(403).json({ error: "code not valid or was expired" })
   });
 });
+
+
+// Construct a schema, using GraphQL schema language
+var schema = buildSchema(`
+type Belt {
+  belt: String
+  batch: Int
+}
+
+input BeltInput {
+  belt: String
+  batch: Int
+}
+
+type Cv {
+  name: String
+  email: String
+  photo: String
+  belts: [Belt]
+  skills: [String]
+  biography: String
+  phone: String
+  interests: [String]
+  hobbies: [String]
+  website: String
+  facebook: String
+  twitter: String
+  linkedin: String
+  github: String
+
+  languages: [String]
+}
+
+input CvInput {
+  name: String
+  email: String
+  photo: String
+  belts: [BeltInput]
+  skills: [String]
+  biography: String
+  phone: String
+  interests: [String]
+  hobbies: [String]
+  website: String
+  facebook: String
+  twitter: String
+  linkedin: String
+  github: String
+
+  languages: [String]
+}
+
+type Query {
+  hello: String
+  cv(uid: String!): Cv
+}
+
+type Mutation {
+  updateCv(uid: String!, input: CvInput!): Cv
+  CreateCv(uid: String!): Cv
+}
+`);
+
+// The root provides a resolver function for each API endpoint
+var root = {
+  hello: () => {
+    return 'Hello world!';
+  },
+  cv: (args, _, context) => {
+    const ref = database.ref(`/users/${args.uid}/cv`);
+    return ref.once('value').then((value) => {
+      return value.val()
+    })
+  },
+  updateCv: (args, _, context) => {
+    if(args.token == undefined || context.user.user_id != args.uid){
+      return null;
+    }
+    const ref = database.ref(`/users/${args.uid}/cv`);
+    ref.update(args.input);
+    return ref.once('value').then((value) => {
+      return value.val()
+    })
+  },
+  createCv: (args, _, context) => {
+    if(args.token == undefined || context.user.user_id != args.uid){
+      return null;
+    }
+    const ref = database.ref(`/users/${args.uid}/cv`);
+    ref.set(args.input);
+    return ref.once('value').then((value) => {
+      return value.val()
+    })
+  },
+};
+
+app.use(mid.getFirebaseIdToken)
+
+app.use('/graphql', graphqlHTTP((request) => ({
+  schema: schema,
+  rootValue: Object.assign({}, root, {context: request }),
+  graphiql: true
+})));
 
 app.use(mid.validateFirebaseIdToken)
 

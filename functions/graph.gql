@@ -3,6 +3,11 @@ type Belt {
   batch: Int
 }
 
+input BeltInput {
+  belt: String
+  batch: Int
+}
+
 type Cv {
   name: String
   email: String
@@ -22,8 +27,31 @@ type Cv {
   languages: [String]
 }
 
+input CvInput {
+  name: String
+  email: String
+  photo: String
+  belts: [BeltInput]
+  skills: [String]
+  biography: String
+  phone: String
+  interests: [String]
+  hobbies: [String]
+  website: String
+  facebook: String
+  twitter: String
+  linkedin: String
+  github: String
+
+  languages: [String]
+}
 
 type Query {
   hello: String
-  getUserCv(uid: String!): Cv
+  cv(uid: String!): Cv
+}
+
+type Mutation {
+  updateCv(uid: String!, input: CvInput!): Cv
+  CreateCv(uid: String!): Cv
 }
